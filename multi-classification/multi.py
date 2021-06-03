@@ -14,13 +14,18 @@ dataset = dataframe.values
 X = dataset[:,0:4].astype(float)
 Y = dataset[:,4]
 
+
 # encode class values as integers 
 encoder = LabelEncoder()
 encoder.fit(Y)
 encoded_Y = encoder.transform(Y)
 
+print(encoded_Y)
+
+
 # convert integers to dummy variables 
 dummy_y = np_utils.to_categorical(encoded_Y)
+print(dummy_y)
 
 # define baseline model 
 def baseline_model():
