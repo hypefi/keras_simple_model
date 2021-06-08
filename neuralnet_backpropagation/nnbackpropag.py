@@ -63,18 +63,19 @@ def backward_propagate_error(network, expected):
                 errors.append(expected[j] - neuron['output'])
         for j in range(len(layer)):
             neuron = layer[j]
-            neuron['delta'] = error[j] * transfer_derivative(neuron['output'])
+            neuron['delta'] = errors[j] * transfer_derivative(neuron['output'])
 
 # Update network weights with error
 
 def update_weights(network, row, l_rate):
-    inputs = row[:-1]
-    if i != 0:
-        inputs = [neuron['output']] for neuron in network[i - 1]]
-    for neuron in network[i]:
-        for j in range(len(inputs)):
-            neuron['weights'][j] += l_rate * neuron['delta'] * inputs[j]
-        neuron['weights'][-1] += l_rate * neuron['delta']
+    for i in range(len(network)): 
+        inputs = row[:-1]
+        if i != 0:
+            inputs = [neuron['output'] for neuron in network[i - 1]]
+        for neuron in network[i]:
+            for j in range(len(inputs)):
+                neuron['weights'][j] += l_rate * neuron['delta'] * inputs[j]
+            neuron['weights'][-1] += l_rate * neuron['delta']
 
 # Train a network for a fixed number of epochs
 
@@ -84,8 +85,8 @@ def train_network(network, train, l_rate, n_epoch, n_outputs):
         for row in train:
             outputs = forward_propagate(network, row)
             expected = [0 for i in range(n_outputs)]
-            expexted[row[-1]] = 1
-            sum_error += sum([expected[i]]-outputs[i])**2 for i in range(len(expected))])
+            expected[row[-1]] = 1
+            sum_error += sum([(expected[i]-outputs[i])**2 for i in range(len(expected))])
             backward_propagate_error(network, expected)
             update_weights(network, row, l_rate)
         print('>epoch=%d, lrate=%.3f, error=%.3f' % (epoch, l_rate, sum_error))
@@ -107,7 +108,7 @@ dataset = [[2.7810836,2.550537003,0],
 n_inputs = len(dataset[0]) - 1
 n_outputs = len(set([row[-1] for row in dataset]))
 network = initialize_network(n_inputs, 2, n_outputs)
-train_network(network, dataset, 0.5, 20, n_outputs)
+train_network(network, dataset, 0.5, 300, n_outputs)
 for layer in network:
 	print(layer)
 
