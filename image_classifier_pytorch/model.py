@@ -29,7 +29,7 @@ def imshow(img):
     npimg = img.numpy()
     plt.imshow(np.transpose(npimg, (1,2,0)))
     plt.show()
-
+'''
 # get some random training images
 
 dataiter = iter(trainloader)
@@ -41,3 +41,4 @@ imshow(torchvision.utils.make_grid(images))
 
 #print labels
 print(' '.join('%5s' % classes[labels[j]] for j in range(batch_size)))
+'''
